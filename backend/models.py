@@ -29,6 +29,7 @@ class Game(db.Model):
     acquisition_price = db.Column(db.Float)  # What user paid for it
     purchase_date = db.Column(db.DateTime)  # When user bought it
     rulebook_pdf = db.Column(db.String(500))  # Path to uploaded rulebook PDF
+    rulebook_url = db.Column(db.String(500))  # URL to external rulebook PDF
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
     sessions = db.relationship('GameSession', backref='game', lazy=True, cascade='all, delete-orphan')
@@ -57,6 +58,7 @@ class Game(db.Model):
             'acquisition_price': self.acquisition_price,
             'purchase_date': self.purchase_date.isoformat() if self.purchase_date else None,
             'rulebook_pdf': self.rulebook_pdf,
+            'rulebook_url': self.rulebook_url,
             'tags': [tag.to_dict() for tag in self.tags],
             'created_at': self.created_at.isoformat() if self.created_at else None
         }

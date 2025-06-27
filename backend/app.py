@@ -99,7 +99,8 @@ def handle_games():
             personal_rating=data.get('personal_rating'),
             acquisition_price=data.get('acquisition_price'),
             purchase_date=datetime.fromisoformat(data['purchase_date']) if data.get('purchase_date') else None,
-            rulebook_pdf=data.get('rulebook_pdf')
+            rulebook_pdf=data.get('rulebook_pdf'),
+            rulebook_url=data.get('rulebook_url')
         )
         
         db.session.add(game)
