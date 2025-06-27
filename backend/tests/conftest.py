@@ -10,6 +10,9 @@ from datetime import datetime
 # Add parent directory to path so we can import app modules
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+# Set testing environment variable BEFORE importing app
+os.environ['TESTING'] = 'true'
+
 from app import app
 from database import db
 from models import Game, Player, GameSession, GamePlayer, Tag, WishlistItem
@@ -19,8 +22,10 @@ from models import Game, Player, GameSession, GamePlayer, Tag, WishlistItem
 def test_app():
     """Create application for testing."""
     # Create a temporary file for the test database
-    db_fd, app.config['DATABASE'] = tempfile.mkstemp()
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
+    db_fd, test_db_path = tempfile.mkstemp(suffix='.db')
+    
+    # Ensure we're using a completely separate test database
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{test_db_path}'
     app.config['TESTING'] = True
     app.config['WTF_CSRF_ENABLED'] = False
     
@@ -29,8 +34,13 @@ def test_app():
         yield app
         db.drop_all()
     
+    # Clean up the temporary database file
     os.close(db_fd)
-    os.unlink(app.config['DATABASE'])
+    os.unlink(test_db_path)
+    
+    # Clean up environment variable
+    if 'TESTING' in os.environ:
+        del os.environ['TESTING']
 
 
 @pytest.fixture(scope='function')
