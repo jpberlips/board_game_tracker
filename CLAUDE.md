@@ -132,6 +132,7 @@ npm run build                                       # Build for production
 4. **CORS**: Enabled for local development between React (3000) and Flask (5002)
 5. **Proxy Configuration**: Frontend uses proxy in package.json to route API calls to backend port 5002
 6. **Winner Calculation**: Sessions track both scores and explicit winner flags
+7. **Cloudflare Zero Trust Caching**: If the application is served through Cloudflare Zero Trust, frontend changes may be aggressively cached. When frontend components don't update after code changes, clear the Cloudflare cache through the dashboard or wait for TTL expiration
 
 ## Testing
 
