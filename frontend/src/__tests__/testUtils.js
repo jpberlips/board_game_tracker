@@ -5,8 +5,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { ThemeProvider } from '../../contexts/ThemeContext';
-import { ToastProvider } from '../../contexts/ToastContext';
+import { ThemeProvider } from '../contexts/ThemeContext';
+import { ToastProvider } from '../contexts/ToastContext';
 
 /**
  * Custom render function that includes necessary providers
