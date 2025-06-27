@@ -8,9 +8,16 @@ Board Game Tracker is a full-stack web application for tracking board game colle
 
 ## Development Commands
 
+**IMPORTANT**: Always use absolute paths when using `cd` commands to avoid confusion and ensure you're in the correct directory.
+
+### Project Paths
+- **Project Root**: `/root/projects/board_game_tracker/`
+- **Backend**: `/root/projects/board_game_tracker/backend/`
+- **Frontend**: `/root/projects/board_game_tracker/frontend/`
+
 ### Backend
 ```bash
-cd backend
+cd /root/projects/board_game_tracker/backend
 pip3 install -r requirements.txt  # Install dependencies
 python app.py                      # Run Flask server (port 5002)
 # Or run in background: nohup python3 app.py > app.log 2>&1 &
@@ -18,7 +25,7 @@ python app.py                      # Run Flask server (port 5002)
 
 ### Frontend
 ```bash
-cd frontend
+cd /root/projects/board_game_tracker/frontend
 npm install                        # Install dependencies
 npm start                          # Run React dev server (port 3000)
 npm run build                      # Build for production
@@ -60,7 +67,7 @@ npm run build                      # Build for production
 
 ### Backend Tests
 ```bash
-cd backend
+cd /root/projects/board_game_tracker/backend
 pytest                                 # Run all backend tests
 pytest -v                             # Verbose output with test names
 pytest --cov=. --cov-report=html      # Run with coverage report
@@ -68,7 +75,7 @@ pytest --cov=. --cov-report=html      # Run with coverage report
 
 ### Frontend Tests
 ```bash
-cd frontend
+cd /root/projects/board_game_tracker/frontend
 npm test                               # Run all frontend tests (interactive)
 npm test -- --coverage                # Run with coverage report
 npm test -- --watchAll=false          # Run once without watch mode
@@ -84,10 +91,10 @@ npm test -- --watchAll=false          # Run once without watch mode
 
 - **IMPORTANT**: Before committing any changes, ALWAYS run the backend test suite to ensure code quality:
   ```bash
-  cd backend && pytest -v
+  cd /root/projects/board_game_tracker/backend && pytest -v
   ```
 - Backend tests must pass successfully before committing
-- Frontend tests are comprehensive but some may need updates - run `npm test -- --watchAll=false` to check status
+- Frontend tests are comprehensive but some may need updates - run `cd /root/projects/board_game_tracker/frontend && npm test -- --watchAll=false` to check status
 - When committing changes, ALWAYS use `git add -A` instead of `git add .` to ensure all changes across the entire repository are staged, including untracked files and changes outside the current directory
 - Verify all changes are staged with `git status` before committing
 - After completing larger changes or features that are working properly, proactively suggest pushing to git with `git push`
