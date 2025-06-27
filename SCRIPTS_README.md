@@ -6,16 +6,16 @@ This directory contains scripts to easily manage the Board Game Tracker applicat
 
 ```bash
 # First time setup - install all dependencies
-./bgt install
+cd /root/projects/board_game_tracker && ./bgt install
 
 # Start the application
-./bgt start
+cd /root/projects/board_game_tracker && ./bgt start
 
 # Check status
-./bgt status
+cd /root/projects/board_game_tracker && ./bgt status
 
 # Stop the application
-./bgt stop
+cd /root/projects/board_game_tracker && ./bgt stop
 ```
 
 ## Available Scripts
@@ -24,14 +24,14 @@ This directory contains scripts to easily manage the Board Game Tracker applicat
 The main command-line interface for managing the application.
 
 ```bash
-./bgt install   # Install all dependencies and set up the application
-./bgt start     # Start both backend and frontend servers
-./bgt stop      # Stop all servers
-./bgt restart   # Restart all servers
-./bgt status    # Show server status
-./bgt logs      # Show combined logs
-./bgt logs backend   # Show only backend logs
-./bgt logs frontend  # Show only frontend logs
+cd /root/projects/board_game_tracker && ./bgt install   # Install all dependencies and set up the application
+cd /root/projects/board_game_tracker && ./bgt start     # Start both backend and frontend servers
+cd /root/projects/board_game_tracker && ./bgt stop      # Stop all servers
+cd /root/projects/board_game_tracker && ./bgt restart   # Restart all servers
+cd /root/projects/board_game_tracker && ./bgt status    # Show server status
+cd /root/projects/board_game_tracker && ./bgt logs      # Show combined logs
+cd /root/projects/board_game_tracker && ./bgt logs backend   # Show only backend logs
+cd /root/projects/board_game_tracker && ./bgt logs frontend  # Show only frontend logs
 ```
 
 ### `start.sh` - Start Script
@@ -57,7 +57,7 @@ Make sure you have these installed:
 1. Clone the repository
 2. Copy `.env.example` to `.env` in the backend directory
 3. Add your `ANTHROPIC_API_KEY` to the `.env` file
-4. Run `./bgt start`
+4. Run `cd /root/projects/board_game_tracker && ./bgt start`
 
 The script will automatically:
 - Create a Python virtual environment
@@ -99,18 +99,18 @@ To run Board Game Tracker as a system service:
 ### Port Already in Use
 If you see "Port already in use" errors:
 ```bash
-./bgt stop  # This will kill any processes on ports 3000 and 5002
+cd /root/projects/board_game_tracker && ./bgt stop  # This will kill any processes on ports 3000 and 5002
 ```
 
 ### Check What's Running
 ```bash
-./bgt status
+cd /root/projects/board_game_tracker && ./bgt status
 ```
 
 ### View Logs
 ```bash
 # View all logs
-./bgt logs
+cd /root/projects/board_game_tracker && ./bgt logs
 
 # View specific logs
 tail -f backend.log

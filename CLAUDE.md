@@ -15,41 +15,50 @@ Board Game Tracker is a full-stack web application for tracking board game colle
 - **Backend**: `/root/projects/board_game_tracker/backend/`
 - **Frontend**: `/root/projects/board_game_tracker/frontend/`
 
-### Backend
+### Using the BGT Management Script (Recommended)
+
+The project includes a comprehensive management script for easy server control:
+
 ```bash
+# Install all dependencies (first time setup)
+cd /root/projects/board_game_tracker && ./bgt install
+
+# Start both servers in background
+cd /root/projects/board_game_tracker && ./bgt start
+
+# Check server status
+cd /root/projects/board_game_tracker && ./bgt status
+
+# Stop all servers
+cd /root/projects/board_game_tracker && ./bgt stop
+
+# Restart all servers (useful after code changes)
+cd /root/projects/board_game_tracker && ./bgt restart
+
+# View logs
+cd /root/projects/board_game_tracker && ./bgt logs           # Combined logs
+cd /root/projects/board_game_tracker && ./bgt logs backend   # Backend only
+cd /root/projects/board_game_tracker && ./bgt logs frontend  # Frontend only
+```
+
+### Manual Server Management (Alternative)
+
+If you need to manage servers manually:
+
+```bash
+# Backend
 cd /root/projects/board_game_tracker/backend
 pip3 install -r requirements.txt                    # Install dependencies
 nohup python3 app.py > app.log 2>&1 &              # Run Flask server in background (port 5002)
-# To stop: pkill -f "python.*app.py"
-```
 
-### Frontend
-```bash
+# Frontend
 cd /root/projects/board_game_tracker/frontend
 npm install                                         # Install dependencies
 nohup npm start > frontend.log 2>&1 &              # Run React dev server in background (port 3000)
 npm run build                                       # Build for production
-# To stop: pkill -f "react-scripts start"
 ```
 
-**IMPORTANT**: Always run servers in background using `nohup` and `&` to prevent them from stopping when the terminal session ends. Both servers must be running for the application to work properly.
-
-### Server Management
-```bash
-# Check if servers are running
-ps aux | grep -E "(python.*app\.py|react-scripts)" | grep -v grep
-
-# Start backend if not running
-cd /root/projects/board_game_tracker/backend && nohup python3 app.py > app.log 2>&1 &
-
-# Start frontend if not running  
-cd /root/projects/board_game_tracker/frontend && nohup npm start > frontend.log 2>&1 &
-
-# Restart both servers (useful after code changes)
-pkill -f "python.*app.py" && pkill -f "react-scripts start"
-cd /root/projects/board_game_tracker/backend && nohup python3 app.py > app.log 2>&1 &
-cd /root/projects/board_game_tracker/frontend && nohup npm start > frontend.log 2>&1 &
-```
+**IMPORTANT**: Always use the `./bgt` script for server management as it handles background execution, dependency installation, and proper cleanup automatically. See `SCRIPTS_README.md` for detailed documentation.
 
 ## Architecture
 
@@ -112,6 +121,11 @@ npm test -- --watchAll=false          # Run once without watch mode
 - **IMPORTANT**: Before committing any changes, ALWAYS run the backend test suite to ensure code quality:
   ```bash
   cd /root/projects/board_game_tracker/backend && pytest -v
+  ```
+- **IMPORTANT**: Use the `./bgt` script for all server management tasks:
+  ```bash
+  cd /root/projects/board_game_tracker && ./bgt status    # Check servers
+  cd /root/projects/board_game_tracker && ./bgt restart   # Restart after changes
   ```
 - Backend tests must pass successfully before committing
 - Frontend tests are comprehensive but some may need updates - run `cd /root/projects/board_game_tracker/frontend && npm test -- --watchAll=false` to check status
