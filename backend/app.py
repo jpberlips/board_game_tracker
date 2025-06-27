@@ -10,7 +10,15 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///games.db'
+# Use different database for testing
+if os.getenv('TESTING') == 'true':
+    # This will be overridden by test configuration
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
+else:
+    # Use absolute path for main database
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{os.path.join(basedir, "instance", "games.db")}'
+    
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
@@ -28,6 +36,12 @@ def handle_games():
     elif request.method == 'POST':
         data = request.json
         
+        # Validate required fields
+        if not data.get('name'):
+            return jsonify({'error': 'Name is required'}), 400
+        if not data.get('owner'):
+            return jsonify({'error': 'Owner is required'}), 400
+            
         if 'bgg_id' in data:
             scraped_data = scrape_bgg_game(data['bgg_id'])
             if scraped_data:

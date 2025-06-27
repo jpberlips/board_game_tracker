@@ -1,0 +1,29 @@
+# Test dependencies for Board Game Tracker backend
+
+# Core testing framework
+pytest==7.4.3
+pytest-flask==1.3.0
+pytest-cov==4.1.0
+
+# Database testing
+pytest-sqlalchemy==0.2.1
+
+# HTTP/API testing
+pytest-httpserver==1.0.8
+requests-mock==1.11.0
+
+# Mocking and fixtures
+pytest-mock==3.12.0
+factory-boy==3.3.1
+
+# Code quality and linting (for testing)
+flake8==6.1.0
+black==23.11.0
+
+# Test reporting
+pytest-html==4.1.1
+pytest-xdist==3.5.0  # Parallel test execution
+
+# Mock external services
+responses==0.24.1
+betamax==0.8.1  # HTTP interaction recording/playback
