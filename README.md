@@ -56,19 +56,26 @@ git clone https://github.com/jpberlips/board_game_tracker.git
 cd board_game_tracker
 ```
 
-2. **Set up the backend:**
+2. **One-command setup (Recommended):**
 ```bash
-cd backend
+cd /root/projects/board_game_tracker && ./bgt install
+```
+
+**Or manual setup:**
+
+3. **Set up the backend:**
+```bash
+cd /root/projects/board_game_tracker/backend
 pip3 install -r requirements.txt
 ```
 
-3. **Set up the frontend:**
+4. **Set up the frontend:**
 ```bash
-cd ../frontend
+cd /root/projects/board_game_tracker/frontend
 npm install
 ```
 
-4. **Configure environment variables (optional):**
+5. **Configure environment variables (optional):**
 Create a `.env` file in the `backend` directory for AI features:
 ```bash
 # backend/.env
@@ -77,30 +84,58 @@ ANTHROPIC_API_KEY=your_claude_api_key_here
 
 ### Running the Application
 
-#### Development Mode
+#### Easy Management (Recommended)
+
+Use the built-in management script for all operations:
+
+```bash
+# Start both servers
+cd /root/projects/board_game_tracker && ./bgt start
+
+# Check server status
+cd /root/projects/board_game_tracker && ./bgt status
+
+# View logs
+cd /root/projects/board_game_tracker && ./bgt logs
+
+# Stop all servers
+cd /root/projects/board_game_tracker && ./bgt stop
+
+# Restart after code changes
+cd /root/projects/board_game_tracker && ./bgt restart
+```
+
+🌐 **Access Points:**
+- Backend API: http://localhost:5002
+- Frontend UI: http://localhost:3000
+
+#### Manual Development Mode
+
+If you prefer manual control:
 
 1. **Start the backend server:**
 ```bash
-cd backend
-python3 app.py
+cd /root/projects/board_game_tracker/backend
+nohup python3 app.py > app.log 2>&1 &
 ```
-🌐 Backend API runs on http://localhost:5002
 
 2. **Start the frontend development server:**
 ```bash
-cd frontend
-npm start
+cd /root/projects/board_game_tracker/frontend
+nohup npm start > frontend.log 2>&1 &
 ```
-🌐 Frontend runs on http://localhost:3000
 
 The frontend automatically proxies API requests to the backend during development.
 
 #### Production Deployment
 
-For production deployment, see the included deployment scripts:
-- `start.sh` - Starts both backend and frontend services
-- `stop.sh` - Stops all services
+For production deployment, use the management script or included deployment scripts:
+- `./bgt start` - Recommended method
+- `start.sh` - Alternative start script
+- `stop.sh` - Alternative stop script
 - `boardgametracker.service` - Systemd service configuration
+
+See `SCRIPTS_README.md` for detailed script documentation.
 
 ## 📖 User Guide
 
