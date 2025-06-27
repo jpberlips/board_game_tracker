@@ -18,17 +18,37 @@ Board Game Tracker is a full-stack web application for tracking board game colle
 ### Backend
 ```bash
 cd /root/projects/board_game_tracker/backend
-pip3 install -r requirements.txt  # Install dependencies
-python app.py                      # Run Flask server (port 5002)
-# Or run in background: nohup python3 app.py > app.log 2>&1 &
+pip3 install -r requirements.txt                    # Install dependencies
+nohup python3 app.py > app.log 2>&1 &              # Run Flask server in background (port 5002)
+# To stop: pkill -f "python.*app.py"
 ```
 
 ### Frontend
 ```bash
 cd /root/projects/board_game_tracker/frontend
-npm install                        # Install dependencies
-npm start                          # Run React dev server (port 3000)
-npm run build                      # Build for production
+npm install                                         # Install dependencies
+nohup npm start > frontend.log 2>&1 &              # Run React dev server in background (port 3000)
+npm run build                                       # Build for production
+# To stop: pkill -f "react-scripts start"
+```
+
+**IMPORTANT**: Always run servers in background using `nohup` and `&` to prevent them from stopping when the terminal session ends. Both servers must be running for the application to work properly.
+
+### Server Management
+```bash
+# Check if servers are running
+ps aux | grep -E "(python.*app\.py|react-scripts)" | grep -v grep
+
+# Start backend if not running
+cd /root/projects/board_game_tracker/backend && nohup python3 app.py > app.log 2>&1 &
+
+# Start frontend if not running  
+cd /root/projects/board_game_tracker/frontend && nohup npm start > frontend.log 2>&1 &
+
+# Restart both servers (useful after code changes)
+pkill -f "python.*app.py" && pkill -f "react-scripts start"
+cd /root/projects/board_game_tracker/backend && nohup python3 app.py > app.log 2>&1 &
+cd /root/projects/board_game_tracker/frontend && nohup npm start > frontend.log 2>&1 &
 ```
 
 ## Architecture
