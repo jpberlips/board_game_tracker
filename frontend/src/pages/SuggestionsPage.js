@@ -189,50 +189,52 @@ function SuggestionsPage() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
+    <div className="max-w-6xl mx-auto space-y-6">
       <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-6">Game Suggestions</h1>
 
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Suggest a game for tonight</h2>
-        
-        <div className="mb-4">
-          <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
-            Number of Players
-          </label>
-          <input
-            type="number"
-            min="1"
-            max="20"
-            value={playerCount}
-            onChange={(e) => setPlayerCount(parseInt(e.target.value))}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-          />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Play Tonight Suggestion Box */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+          <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Suggest a game for tonight</h2>
+          
+          <div className="mb-4">
+            <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+              Number of Players
+            </label>
+            <input
+              type="number"
+              min="1"
+              max="20"
+              value={playerCount}
+              onChange={(e) => setPlayerCount(parseInt(e.target.value))}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+              Preferences (optional)
+            </label>
+            <textarea
+              value={preferences}
+              onChange={(e) => setPreferences(e.target.value)}
+              placeholder="e.g., quick game, strategy, party game, etc."
+              rows="3"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+            />
+          </div>
+
+          <button
+            onClick={getSuggestion}
+            disabled={loading}
+            className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:bg-gray-400"
+          >
+            {loading ? 'Getting suggestion...' : 'Get Suggestion'}
+          </button>
         </div>
 
-        <div className="mb-4">
-          <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
-            Preferences (optional)
-          </label>
-          <textarea
-            value={preferences}
-            onChange={(e) => setPreferences(e.target.value)}
-            placeholder="e.g., quick game, strategy, party game, etc."
-            rows="3"
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-          />
-        </div>
-
-        <button
-          onClick={getSuggestion}
-          disabled={loading}
-          className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:bg-gray-400"
-        >
-          {loading ? 'Getting suggestion...' : 'Get Suggestion'}
-        </button>
-      </div>
-
-      {/* New Purchase Suggestion Box */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        {/* Purchase Suggestion Box */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
         <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Suggest a new game to buy</h2>
         
         <div className="mb-4">
@@ -270,6 +272,7 @@ function SuggestionsPage() {
         >
           {purchaseLoading ? 'Getting purchase suggestion...' : 'Get Purchase Suggestion'}
         </button>
+        </div>
       </div>
 
       {suggestion && (
