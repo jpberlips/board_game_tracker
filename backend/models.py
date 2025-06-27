@@ -28,6 +28,7 @@ class Game(db.Model):
     personal_rating = db.Column(db.Float)  # User's personal rating 1-10
     acquisition_price = db.Column(db.Float)  # What user paid for it
     purchase_date = db.Column(db.DateTime)  # When user bought it
+    rulebook_pdf = db.Column(db.String(500))  # Path to uploaded rulebook PDF
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
     sessions = db.relationship('GameSession', backref='game', lazy=True, cascade='all, delete-orphan')
@@ -55,6 +56,7 @@ class Game(db.Model):
             'personal_rating': self.personal_rating,
             'acquisition_price': self.acquisition_price,
             'purchase_date': self.purchase_date.isoformat() if self.purchase_date else None,
+            'rulebook_pdf': self.rulebook_pdf,
             'tags': [tag.to_dict() for tag in self.tags],
             'created_at': self.created_at.isoformat() if self.created_at else None
         }
@@ -78,6 +80,7 @@ class GameSession(db.Model):
     game_id = db.Column(db.Integer, db.ForeignKey('game.id'), nullable=False)
     date = db.Column(db.DateTime, nullable=False)
     notes = db.Column(db.Text)
+    photo_url = db.Column(db.String(500))  # Path to uploaded session photo
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
     players = db.relationship('GamePlayer', backref='session', lazy=True, cascade='all, delete-orphan')
@@ -89,6 +92,7 @@ class GameSession(db.Model):
             'game': self.game.to_dict() if self.game else None,
             'date': self.date.isoformat() if self.date else None,
             'notes': self.notes,
+            'photo_url': self.photo_url,
             'players': [gp.to_dict() for gp in self.players],
             'created_at': self.created_at.isoformat() if self.created_at else None
         }

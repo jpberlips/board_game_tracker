@@ -86,9 +86,12 @@ case "$1" in
             echo -e "${GREEN}✓ .env file already exists${NC}"
         fi
         
-        # Create database
+        # Create database and run migrations
         echo "Initializing database..."
         python -c "from app import app, db; app.app_context().push(); db.create_all(); print('✓ Database created')"
+        
+        echo "Running database migrations..."
+        python migrate.py migrate
         
         deactivate
         cd ..

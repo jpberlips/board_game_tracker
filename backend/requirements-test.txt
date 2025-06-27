@@ -27,3 +27,6 @@ pytest-xdist==3.5.0  # Parallel test execution
 # Mock external services
 responses==0.24.1
 betamax==0.8.1  # HTTP interaction recording/playback
+
+# Image processing for tests
+Pillow==10.1.0

@@ -87,6 +87,10 @@ if [ ! -f ".env" ]; then
     echo -e "${RED}Please edit backend/.env and add your ANTHROPIC_API_KEY${NC}"
 fi
 
+# Run database migrations
+echo "Checking for database migrations..."
+python migrate.py migrate
+
 # Start Flask server in background
 echo "Starting Flask server on port 5002..."
 python app.py > ../backend.log 2>&1 &

@@ -1,7 +1,9 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from datetime import datetime
 import os
+import uuid
+from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 from database import db
 
@@ -21,11 +23,44 @@ else:
     
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# File upload configuration
+UPLOAD_FOLDER = 'uploads'
+ALLOWED_PHOTO_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
+ALLOWED_PDF_EXTENSIONS = {'pdf'}
+MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16MB max file size
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = MAX_CONTENT_LENGTH
+
+# Create upload directories
+os.makedirs(os.path.join(UPLOAD_FOLDER, 'photos'), exist_ok=True)
+os.makedirs(os.path.join(UPLOAD_FOLDER, 'rulebooks'), exist_ok=True)
+
 db.init_app(app)
 
 from models import Game, GameSession, Player, GamePlayer, Tag, WishlistItem
 from scraper import scrape_bgg_game
 from ai_suggestions import get_game_suggestion
+
+def allowed_file(filename, allowed_extensions):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in allowed_extensions
+
+def save_uploaded_file(file, folder_name):
+    """Save uploaded file and return the relative path"""
+    if file and allowed_file(file.filename, ALLOWED_PHOTO_EXTENSIONS if folder_name == 'photos' else ALLOWED_PDF_EXTENSIONS):
+        # Generate unique filename
+        filename = secure_filename(file.filename)
+        name, ext = os.path.splitext(filename)
+        unique_filename = f"{name}_{uuid.uuid4().hex[:8]}{ext}"
+        
+        # Save file
+        filepath = os.path.join(UPLOAD_FOLDER, folder_name, unique_filename)
+        file.save(filepath)
+        
+        # Return relative path for database storage
+        return f"{folder_name}/{unique_filename}"
+    return None
 
 @app.route('/api/games', methods=['GET', 'POST'])
 def handle_games():
@@ -63,7 +98,8 @@ def handle_games():
             rank_family=data.get('rankings', {}).get('family'),
             personal_rating=data.get('personal_rating'),
             acquisition_price=data.get('acquisition_price'),
-            purchase_date=datetime.fromisoformat(data['purchase_date']) if data.get('purchase_date') else None
+            purchase_date=datetime.fromisoformat(data['purchase_date']) if data.get('purchase_date') else None,
+            rulebook_pdf=data.get('rulebook_pdf')
         )
         
         db.session.add(game)
@@ -124,7 +160,8 @@ def handle_sessions():
         session = GameSession(
             game_id=data['game_id'],
             date=datetime.fromisoformat(data['date']),
-            notes=data.get('notes')
+            notes=data.get('notes'),
+            photo_url=data.get('photo_url')
         )
         
         db.session.add(session)
@@ -162,6 +199,7 @@ def handle_session(session_id):
         session.game_id = data['game_id']
         session.date = datetime.fromisoformat(data['date'])
         session.notes = data.get('notes')
+        session.photo_url = data.get('photo_url')
         
         # Remove existing players
         GamePlayer.query.filter_by(session_id=session_id).delete()
@@ -502,6 +540,58 @@ def move_to_collection(item_id):
     db.session.delete(wishlist_item)  # Remove from wishlist
     db.session.commit()
     return jsonify(game.to_dict()), 201
+
+# File upload endpoints
+@app.route('/api/upload/photo', methods=['POST'])
+def upload_photo():
+    """Upload a session photo"""
+    if 'photo' not in request.files:
+        return jsonify({'error': 'No photo file provided'}), 400
+    
+    file = request.files['photo']
+    if file.filename == '':
+        return jsonify({'error': 'No file selected'}), 400
+    
+    try:
+        file_path = save_uploaded_file(file, 'photos')
+        if file_path:
+            return jsonify({
+                'success': True,
+                'file_path': file_path,
+                'url': f'/api/uploads/{file_path}'
+            })
+        else:
+            return jsonify({'error': 'Invalid file type. Allowed: png, jpg, jpeg, gif, webp'}), 400
+    except Exception as e:
+        return jsonify({'error': f'Upload failed: {str(e)}'}), 500
+
+@app.route('/api/upload/rulebook', methods=['POST'])
+def upload_rulebook():
+    """Upload a game rulebook PDF"""
+    if 'pdf' not in request.files:
+        return jsonify({'error': 'No PDF file provided'}), 400
+    
+    file = request.files['pdf']
+    if file.filename == '':
+        return jsonify({'error': 'No file selected'}), 400
+    
+    try:
+        file_path = save_uploaded_file(file, 'rulebooks')
+        if file_path:
+            return jsonify({
+                'success': True,
+                'file_path': file_path,
+                'url': f'/api/uploads/{file_path}'
+            })
+        else:
+            return jsonify({'error': 'Invalid file type. Only PDF files allowed'}), 400
+    except Exception as e:
+        return jsonify({'error': f'Upload failed: {str(e)}'}), 500
+
+@app.route('/api/uploads/<path:filename>')
+def uploaded_file(filename):
+    """Serve uploaded files"""
+    return send_from_directory(UPLOAD_FOLDER, filename)
 
 # BGG Hot Games endpoint
 @app.route('/api/bgg/hot', methods=['GET'])
