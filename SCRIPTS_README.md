@@ -5,20 +5,23 @@ This directory contains scripts to easily manage the Board Game Tracker applicat
 ## Quick Start
 
 ```bash
+# First, navigate to your project directory
+cd /path/to/your/board_game_tracker
+
 # First time setup - install all dependencies
-cd /root/projects/board_game_tracker && ./bgt install
+./bgt install
 
 # Start the application in background (recommended)
-cd /root/projects/board_game_tracker && ./bgt start-bg
+./bgt start-bg
 
 # Or start with logs visible (alternative)
-cd /root/projects/board_game_tracker && ./bgt start
+./bgt start
 
 # Check status
-cd /root/projects/board_game_tracker && ./bgt status
+./bgt status
 
 # Stop the application
-cd /root/projects/board_game_tracker && ./bgt stop
+./bgt stop
 ```
 
 ## Available Scripts
@@ -27,15 +30,18 @@ cd /root/projects/board_game_tracker && ./bgt stop
 The main command-line interface for managing the application.
 
 ```bash
-cd /root/projects/board_game_tracker && ./bgt install   # Install all dependencies and set up the application
-cd /root/projects/board_game_tracker && ./bgt start-bg  # Start both servers in background (recommended)
-cd /root/projects/board_game_tracker && ./bgt start     # Start both servers with logs visible (blocks terminal)
-cd /root/projects/board_game_tracker && ./bgt stop      # Stop all servers
-cd /root/projects/board_game_tracker && ./bgt restart   # Restart all servers
-cd /root/projects/board_game_tracker && ./bgt status    # Show server status
-cd /root/projects/board_game_tracker && ./bgt logs      # Show combined logs
-cd /root/projects/board_game_tracker && ./bgt logs backend   # Show only backend logs
-cd /root/projects/board_game_tracker && ./bgt logs frontend  # Show only frontend logs
+# First, navigate to your project directory
+cd /path/to/your/board_game_tracker
+
+./bgt install      # Install all dependencies and set up the application
+./bgt start-bg     # Start both servers in background (recommended)
+./bgt start        # Start both servers with logs visible (blocks terminal)
+./bgt stop         # Stop all servers
+./bgt restart      # Restart all servers
+./bgt status       # Show server status
+./bgt logs         # Show combined logs
+./bgt logs backend # Show only backend logs
+./bgt logs frontend # Show only frontend logs
 ```
 
 ### `start.sh` - Start Script

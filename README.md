@@ -58,20 +58,20 @@ cd board_game_tracker
 
 2. **One-command setup (Recommended):**
 ```bash
-cd /root/projects/board_game_tracker && ./bgt install
+cd /path/to/your/board_game_tracker && ./bgt install
 ```
 
 **Or manual setup:**
 
 3. **Set up the backend:**
 ```bash
-cd /root/projects/board_game_tracker/backend
+cd /path/to/your/board_game_tracker/backend
 pip3 install -r requirements.txt
 ```
 
 4. **Set up the frontend:**
 ```bash
-cd /root/projects/board_game_tracker/frontend
+cd /path/to/your/board_game_tracker/frontend
 npm install
 ```
 
@@ -89,23 +89,26 @@ ANTHROPIC_API_KEY=your_claude_api_key_here
 Use the built-in management script for all operations:
 
 ```bash
+# First, navigate to your project directory
+cd /path/to/your/board_game_tracker
+
 # Start both servers in background (recommended for development)
-cd /root/projects/board_game_tracker && ./bgt start-bg
+./bgt start-bg
 
 # Start both servers with logs visible (blocks terminal)
-cd /root/projects/board_game_tracker && ./bgt start
+./bgt start
 
 # Check server status
-cd /root/projects/board_game_tracker && ./bgt status
+./bgt status
 
 # View logs
-cd /root/projects/board_game_tracker && ./bgt logs
+./bgt logs
 
 # Stop all servers
-cd /root/projects/board_game_tracker && ./bgt stop
+./bgt stop
 
 # Restart after code changes
-cd /root/projects/board_game_tracker && ./bgt restart
+./bgt restart
 ```
 
 🌐 **Access Points:**
@@ -118,13 +121,13 @@ If you prefer manual control:
 
 1. **Start the backend server:**
 ```bash
-cd /root/projects/board_game_tracker/backend
+cd /path/to/your/board_game_tracker/backend
 nohup python3 app.py > app.log 2>&1 &
 ```
 
 2. **Start the frontend development server:**
 ```bash
-cd /root/projects/board_game_tracker/frontend
+cd /path/to/your/board_game_tracker/frontend
 nohup npm start > frontend.log 2>&1 &
 ```
 
