@@ -60,6 +60,7 @@ Please suggest ONE specific board game to purchase. Consider:
 - The preferences and collection context provided
 - Popular, well-reviewed games that would complement their collection
 - Avoid suggesting games they already own (if mentioned in preferences)
+- Avoid suggesting games already in their wishlist (if mentioned in preferences)
 
 Respond with a JSON object containing:
 - "suggested_game": the exact name of the game you recommend to buy

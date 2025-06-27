@@ -239,9 +239,26 @@ def suggest_purchase():
         if player_count == '' or player_count == 0:
             player_count = None
         
+        # Get wishlist items to exclude from suggestions
+        wishlist_items = WishlistItem.query.all()
+        wishlist_games = [item.name for item in wishlist_items]
+        
+        # Prepare preferences with wishlist info
+        preferences = data.get('preferences', {})
+        if wishlist_games:
+            # Add wishlist games to the context
+            wishlist_note = f"IMPORTANT: Do NOT suggest games already in wishlist. Games in wishlist (DO NOT SUGGEST THESE): {', '.join(wishlist_games)}"
+            if isinstance(preferences, dict):
+                if 'notes' in preferences:
+                    preferences['notes'] = wishlist_note + '. ' + preferences['notes']
+                else:
+                    preferences['notes'] = wishlist_note
+            else:
+                preferences = {'notes': wishlist_note}
+        
         # For purchase suggestions, we don't filter by owned games
         # We pass an empty games list and let Claude suggest any game
-        suggestion = get_game_suggestion([], player_count, data.get('preferences', {}))
+        suggestion = get_game_suggestion([], player_count, preferences)
         return jsonify(suggestion)
     except Exception as e:
         print(f"Error in suggest_purchase: {str(e)}")
