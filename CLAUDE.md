@@ -6,6 +6,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Board Game Tracker is a full-stack web application for tracking board game collections and game sessions. It features BGG (BoardGameGeek) integration for auto-fetching game details and Claude AI integration for game suggestions.
 
+## Documentation Maintenance
+
+**IMPORTANT**: When updating project documentation, ensure consistency across all documentation files:
+
+- **README.md**: Main project documentation for users and contributors
+- **SCRIPTS_README.md**: Detailed documentation for the BGT management script and deployment
+- **CLAUDE.md**: This file - development guidelines for Claude Code
+
+Always review and update all three files when making changes to:
+- Installation procedures
+- Command examples  
+- Server management instructions
+- Project paths or structure
+- Feature descriptions
+
+Keep command examples, paths, and procedures synchronized across all documentation files.
+
 ## Development Commands
 
 **IMPORTANT**: Always use absolute paths when using `cd` commands to avoid confusion and ensure you're in the correct directory.
@@ -126,6 +143,13 @@ npm test -- --watchAll=false          # Run once without watch mode
   ```bash
   cd /root/projects/board_game_tracker && ./bgt status    # Check servers
   cd /root/projects/board_game_tracker && ./bgt restart   # Restart after changes
+  ```
+- **IMPORTANT**: When updating documentation, ensure all three documentation files are kept in sync:
+  ```bash
+  # Always review and update these files together:
+  # - README.md (main project docs)
+  # - SCRIPTS_README.md (script documentation) 
+  # - CLAUDE.md (this file)
   ```
 - Backend tests must pass successfully before committing
 - Frontend tests are comprehensive but some may need updates - run `cd /root/projects/board_game_tracker/frontend && npm test -- --watchAll=false` to check status
