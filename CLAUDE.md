@@ -40,8 +40,11 @@ The project includes a comprehensive management script for easy server control:
 # Install all dependencies (first time setup)
 cd /root/projects/board_game_tracker && ./bgt install
 
-# Start both servers in background
+# Start both servers (shows logs in foreground - blocks terminal)
 cd /root/projects/board_game_tracker && ./bgt start
+
+# Start both servers in background (recommended for development)
+cd /root/projects/board_game_tracker && ./bgt start-bg
 
 # Check server status
 cd /root/projects/board_game_tracker && ./bgt status

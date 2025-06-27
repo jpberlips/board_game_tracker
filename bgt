@@ -117,6 +117,23 @@ case "$1" in
         $DIR/start.sh
         ;;
     
+    start-bg)
+        echo -e "${BLUE}Starting Board Game Tracker in background...${NC}"
+        $DIR/start-bg.sh
+        sleep 3
+        if check_port 5002 && check_port 3000; then
+            echo -e "${GREEN}✓ Board Game Tracker started successfully!${NC}"
+            echo -e "${GREEN}✓ Backend API: http://localhost:5002${NC}"
+            echo -e "${GREEN}✓ Frontend UI: http://localhost:3000${NC}"
+            echo -e "\n${BLUE}Use './bgt logs' to view logs${NC}"
+            echo -e "${BLUE}Use './bgt status' to check status${NC}"
+            echo -e "${BLUE}Use './bgt stop' to stop servers${NC}"
+        else
+            echo -e "${RED}Error: Failed to start servers in background${NC}"
+            echo -e "Try './bgt start' to see error messages"
+        fi
+        ;;
+    
     stop)
         $DIR/stop.sh
         ;;
@@ -159,11 +176,12 @@ case "$1" in
     *)
         echo "Board Game Tracker CLI"
         echo ""
-        echo "Usage: $0 {install|start|stop|restart|status|logs [backend|frontend]}"
+        echo "Usage: $0 {install|start|start-bg|stop|restart|status|logs [backend|frontend]}"
         echo ""
         echo "Commands:"
         echo "  install   - Install all dependencies and set up the application"
-        echo "  start     - Start both backend and frontend servers"
+        echo "  start     - Start both servers (shows logs, blocks terminal)"
+        echo "  start-bg  - Start both servers in background (recommended for development)"
         echo "  stop      - Stop all servers"
         echo "  restart   - Restart all servers"
         echo "  status    - Show server status"
@@ -171,7 +189,8 @@ case "$1" in
         echo ""
         echo "Examples:"
         echo "  $0 install    # First time setup"
-        echo "  $0 start      # Start the application"
+        echo "  $0 start-bg   # Start in background (recommended)"
+        echo "  $0 start      # Start with logs visible"
         echo "  $0 status     # Check if running"
         echo "  $0 logs backend  # View backend logs"
         exit 1

@@ -8,7 +8,10 @@ This directory contains scripts to easily manage the Board Game Tracker applicat
 # First time setup - install all dependencies
 cd /root/projects/board_game_tracker && ./bgt install
 
-# Start the application
+# Start the application in background (recommended)
+cd /root/projects/board_game_tracker && ./bgt start-bg
+
+# Or start with logs visible (alternative)
 cd /root/projects/board_game_tracker && ./bgt start
 
 # Check status
@@ -25,7 +28,8 @@ The main command-line interface for managing the application.
 
 ```bash
 cd /root/projects/board_game_tracker && ./bgt install   # Install all dependencies and set up the application
-cd /root/projects/board_game_tracker && ./bgt start     # Start both backend and frontend servers
+cd /root/projects/board_game_tracker && ./bgt start-bg  # Start both servers in background (recommended)
+cd /root/projects/board_game_tracker && ./bgt start     # Start both servers with logs visible (blocks terminal)
 cd /root/projects/board_game_tracker && ./bgt stop      # Stop all servers
 cd /root/projects/board_game_tracker && ./bgt restart   # Restart all servers
 cd /root/projects/board_game_tracker && ./bgt status    # Show server status

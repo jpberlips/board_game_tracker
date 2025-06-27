@@ -89,7 +89,10 @@ ANTHROPIC_API_KEY=your_claude_api_key_here
 Use the built-in management script for all operations:
 
 ```bash
-# Start both servers
+# Start both servers in background (recommended for development)
+cd /root/projects/board_game_tracker && ./bgt start-bg
+
+# Start both servers with logs visible (blocks terminal)
 cd /root/projects/board_game_tracker && ./bgt start
 
 # Check server status

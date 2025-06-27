@@ -62,6 +62,12 @@ fi
 echo -e "\n${GREEN}Starting Backend Server...${NC}"
 cd backend
 
+# Create instance directory for database if it doesn't exist
+if [ ! -d "instance" ]; then
+    echo "Creating instance directory for database..."
+    mkdir -p instance
+fi
+
 # Check if virtual environment exists
 if [ ! -d "venv" ]; then
     echo "Creating Python virtual environment..."
