@@ -12,7 +12,8 @@ Board Game Tracker is a full-stack web application for tracking board game colle
 ```bash
 cd backend
 pip3 install -r requirements.txt  # Install dependencies
-python app.py                      # Run Flask server (port 5000)
+python app.py                      # Run Flask server (port 5002)
+# Or run in background: nohup python3 app.py > app.log 2>&1 &
 ```
 
 ### Frontend
@@ -51,8 +52,9 @@ npm run build                      # Build for production
 1. **BGG Scraping**: The scraper respects rate limits with a 1-second delay between requests
 2. **Database Relations**: Games have sessions, sessions have players through a many-to-many relationship
 3. **AI Integration**: Requires ANTHROPIC_API_KEY environment variable for Claude suggestions
-4. **CORS**: Enabled for local development between React (3000) and Flask (5000)
-5. **Winner Calculation**: Sessions track both scores and explicit winner flags
+4. **CORS**: Enabled for local development between React (3000) and Flask (5002)
+5. **Proxy Configuration**: Frontend uses proxy in package.json to route API calls to backend port 5002
+6. **Winner Calculation**: Sessions track both scores and explicit winner flags
 
 ## Git Best Practices
 
