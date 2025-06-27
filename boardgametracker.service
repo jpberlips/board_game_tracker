@@ -1,0 +1,18 @@
+[Unit]
+Description=Board Game Tracker Web Application
+After=network.target
+
+[Service]
+Type=forking
+User=root
+WorkingDirectory=/root/projects/board_game_tracker
+ExecStart=/root/projects/board_game_tracker/start.sh
+ExecStop=/root/projects/board_game_tracker/stop.sh
+Restart=on-failure
+RestartSec=10
+
+# Environment variables
+Environment="PATH=/root/.nvm/versions/node/v20.19.3/bin:/usr/local/bin:/usr/bin:/bin"
+
+[Install]
+WantedBy=multi-user.target
