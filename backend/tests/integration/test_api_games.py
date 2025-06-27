@@ -91,19 +91,21 @@ class TestGamesAPI:
         
     def test_create_game_missing_required_fields(self, client, clean_db):
         """Test creating a game with missing required fields."""
-        # Missing owner
+        # Missing owner - should work since Flask doesn't enforce this at API level
         game_data = {'name': 'Test Game'}
         response = client.post('/api/games',
                              data=json.dumps(game_data),
                              content_type='application/json')
-        assert response.status_code == 400 or response.status_code == 500
+        # This will fail at database level due to NOT NULL constraint
+        assert response.status_code in [400, 500]  # Accept either validation or DB error
         
-        # Missing name
+        # Missing name - should work since Flask doesn't enforce this at API level  
         game_data = {'owner': 'Test Owner'}
         response = client.post('/api/games',
                              data=json.dumps(game_data),
                              content_type='application/json')
-        assert response.status_code == 400 or response.status_code == 500
+        # This will fail at database level due to NOT NULL constraint
+        assert response.status_code in [400, 500]  # Accept either validation or DB error
         
     def test_create_game_invalid_json(self, client, clean_db):
         """Test creating a game with invalid JSON."""

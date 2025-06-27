@@ -28,6 +28,12 @@ def handle_games():
     elif request.method == 'POST':
         data = request.json
         
+        # Validate required fields
+        if not data.get('name'):
+            return jsonify({'error': 'Name is required'}), 400
+        if not data.get('owner'):
+            return jsonify({'error': 'Owner is required'}), 400
+            
         if 'bgg_id' in data:
             scraped_data = scrape_bgg_game(data['bgg_id'])
             if scraped_data:

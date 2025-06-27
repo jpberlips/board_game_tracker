@@ -49,6 +49,7 @@ def app_context(test_app):
 @pytest.fixture(scope='function')
 def clean_db(app_context):
     """Provide a clean database for each test."""
+    db.drop_all()  # Ensure clean state
     db.create_all()
     yield db
     db.session.remove()

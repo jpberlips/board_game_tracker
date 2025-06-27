@@ -105,6 +105,20 @@ Respond with a JSON object containing:
     except Exception as e:
         print(f"Error getting AI suggestion: {str(e)}")
         # Fallback to simple logic
+        if player_count is None or player_count == 0:
+            # No player count specified, pick a game with moderate complexity
+            if games:
+                games_sorted = sorted(games, key=lambda g: abs((g.complexity or 2.5) - 2.5))
+                return {
+                    'suggested_game': games_sorted[0].name,
+                    'reason': 'Selected game with moderate complexity for flexible player count.'
+                }
+            else:
+                return {
+                    'suggested_game': None,
+                    'reason': 'No games available for suggestion.'
+                }
+        
         suitable_games = [g for g in games if g.min_players <= player_count <= g.max_players]
         if suitable_games:
             # Pick a game with moderate complexity

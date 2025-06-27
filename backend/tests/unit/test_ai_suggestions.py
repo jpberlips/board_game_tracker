@@ -186,13 +186,17 @@ class TestAISuggestions:
         with patch('ai_suggestions.Anthropic') as mock_anthropic:
             mock_anthropic.side_effect = Exception("API Error")
             
-            # Test with None player count
+            # Test with None player count - should return all games for selection
             result = get_game_suggestion(sample_games_collection, None, {})
             assert result['suggested_game'] is not None
+            # Should pick a game with moderate complexity (around 2.5)
+            assert 'moderate complexity' in result['reason'].lower() or 'availability' in result['reason'].lower()
             
-            # Test with 0 player count  
+            # Test with 0 player count - should be treated same as None
             result = get_game_suggestion(sample_games_collection, 0, {})
             assert result['suggested_game'] is not None
+            # Should pick a game with moderate complexity or mention availability
+            assert 'moderate complexity' in result['reason'].lower() or 'availability' in result['reason'].lower()
             
     def test_get_suggestion_no_suitable_games(self, sample_games_collection):
         """Test when no games match the player count."""
