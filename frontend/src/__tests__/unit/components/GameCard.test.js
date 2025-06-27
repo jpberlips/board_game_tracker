@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { screen, fireEvent } from '@testing-library/react';
-import { renderWithProviders, mockGame } from '../../utils/testUtils';
+import { renderWithProviders, mockGame } from '../../testUtils';
 import GameCard from '../../../components/GameCard';
 
 describe('GameCard Component', () => {

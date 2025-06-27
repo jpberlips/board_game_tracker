@@ -263,6 +263,15 @@ describe('ThemeContext', () => {
 
   describe('Edge Cases', () => {
     test('handles corrupted localStorage data gracefully', () => {
+      // Mock JSON.parse to throw an error for this test
+      const originalParse = JSON.parse;
+      JSON.parse = jest.fn().mockImplementation((str) => {
+        if (str === 'invalid-json') {
+          throw new Error('Invalid JSON');
+        }
+        return originalParse(str);
+      });
+      
       localStorage.setItem('darkMode', 'invalid-json');
 
       render(
@@ -273,6 +282,9 @@ describe('ThemeContext', () => {
 
       // Should fall back to system preference or light theme
       expect(screen.getByTestId('theme-status')).toHaveTextContent(/^(light|dark)$/);
+      
+      // Restore JSON.parse
+      JSON.parse = originalParse;
     });
 
     test('handles missing matchMedia gracefully', () => {

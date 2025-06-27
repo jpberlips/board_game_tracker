@@ -4,7 +4,11 @@ Pytest configuration and shared fixtures for Board Game Tracker backend tests.
 import pytest
 import tempfile
 import os
+import sys
 from datetime import datetime
+
+# Add parent directory to path so we can import app modules
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from app import app
 from database import db
