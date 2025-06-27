@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import RulebookInput from './RulebookInput';
 
 function EditGameModal({ game, onClose, onSave }) {
   const [formData, setFormData] = useState({
@@ -9,6 +10,8 @@ function EditGameModal({ game, onClose, onSave }) {
     acquisition_price: '',
     personal_rating: '',
     purchase_date: '',
+    rulebook_pdf: '',
+    rulebook_url: '',
   });
 
   useEffect(() => {
@@ -21,6 +24,8 @@ function EditGameModal({ game, onClose, onSave }) {
         acquisition_price: game.acquisition_price || '',
         personal_rating: game.personal_rating || '',
         purchase_date: game.purchase_date ? game.purchase_date.split('T')[0] : '',
+        rulebook_pdf: game.rulebook_pdf || '',
+        rulebook_url: game.rulebook_url || '',
       });
     }
   }, [game]);
@@ -179,6 +184,23 @@ function EditGameModal({ game, onClose, onSave }) {
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             />
           </div>
+
+          <RulebookInput
+            onFileUpload={(filePath, url) => {
+              setFormData(prev => ({ ...prev, rulebook_pdf: filePath }));
+            }}
+            onUrlChange={(url) => {
+              setFormData(prev => ({ ...prev, rulebook_url: url }));
+            }}
+            currentFile={formData.rulebook_pdf}
+            currentUrl={formData.rulebook_url}
+            onRemoveFile={() => {
+              setFormData(prev => ({ ...prev, rulebook_pdf: '' }));
+            }}
+            onRemoveUrl={() => {
+              setFormData(prev => ({ ...prev, rulebook_url: '' }));
+            }}
+          />
 
           <div className="flex justify-end space-x-3 pt-4">
             <button

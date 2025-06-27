@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import FileUpload from './FileUpload';
 
 function AddSessionModal({ onClose, onAdd, games, existingPlayers }) {
   const [formData, setFormData] = useState({
     game_id: '',
     date: new Date().toISOString().split('T')[0],
     notes: '',
+    photo_url: '',
   });
   const [players, setPlayers] = useState([
     { name: '', score: '', is_winner: false }
@@ -161,7 +163,7 @@ function AddSessionModal({ onClose, onAdd, games, existingPlayers }) {
             </button>
           </div>
 
-          <div className="mb-6">
+          <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">
               Notes
             </label>
@@ -171,6 +173,21 @@ function AddSessionModal({ onClose, onAdd, games, existingPlayers }) {
               onChange={handleChange}
               rows="3"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div className="mb-6">
+            <FileUpload
+              accept="image/*"
+              onFileUpload={(filePath, url) => {
+                setFormData(prev => ({ ...prev, photo_url: filePath }));
+              }}
+              currentFile={formData.photo_url}
+              onRemove={() => {
+                setFormData(prev => ({ ...prev, photo_url: '' }));
+              }}
+              label="Session Photo (optional)"
+              maxSize={16 * 1024 * 1024}
             />
           </div>
 

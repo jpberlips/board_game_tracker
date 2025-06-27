@@ -115,20 +115,35 @@ function GameCard({ game, onDelete, onEdit }) {
 
         {/* Action Buttons */}
         <div className="pt-4 border-t border-gray-200 dark:border-gray-600 flex justify-between items-center">
-          {game.bgg_id && (
-            <a
-              href={`https://boardgamegeek.com/boardgame/${game.bgg_id}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium transition-colors"
-            >
-              <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
-                <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-1a1 1 0 10-2 0v1H5V7h1a1 1 0 000-2H5z" />
-              </svg>
-              BGG
-            </a>
-          )}
+          <div className="flex space-x-3">
+            {game.bgg_id && (
+              <a
+                href={`https://boardgamegeek.com/boardgame/${game.bgg_id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium transition-colors"
+              >
+                <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                  <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-1a1 1 0 10-2 0v1H5V7h1a1 1 0 000-2H5z" />
+                </svg>
+                BGG
+              </a>
+            )}
+            {(game.rulebook_pdf || game.rulebook_url) && (
+              <a
+                href={game.rulebook_url || `/api/uploads/${game.rulebook_pdf}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 text-sm font-medium transition-colors"
+              >
+                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Rules
+              </a>
+            )}
+          </div>
           <div className="flex space-x-2">
             <button
               onClick={() => onEdit(game)}
