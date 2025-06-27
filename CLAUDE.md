@@ -25,40 +25,61 @@ Keep command examples, paths, and procedures synchronized across all documentati
 
 ## Development Commands
 
-**IMPORTANT**: Always use absolute paths when using `cd` commands to avoid confusion and ensure you're in the correct directory.
+**IMPORTANT**: Always determine the project root dynamically and use absolute paths to avoid confusion.
+
+### Path Detection Strategy
+1. **First step**: Always determine the current project location
+   ```bash
+   # Option 1: If already in project directory
+   PROJECT_ROOT=$(pwd)
+   
+   # Option 2: If you need to find the project directory
+   PROJECT_ROOT=$(find ~ -name "bgt" -type f -executable | head -1 | xargs dirname)
+   
+   # Option 3: If you know the project name
+   PROJECT_ROOT=$(find ~ -name "board_game_tracker" -type d | head -1)
+   ```
+
+2. **Use the detected path**: Always use `"${PROJECT_ROOT}"` in subsequent commands
+3. **Never hardcode paths**: Avoid using fixed paths like `/root/projects/board_game_tracker/`
 
 ### Project Paths
-- **Project Root**: `/root/projects/board_game_tracker/`
-- **Backend**: `/root/projects/board_game_tracker/backend/`
-- **Frontend**: `/root/projects/board_game_tracker/frontend/`
+- **Project Root**: Always determine dynamically based on current working directory
+- **Backend**: `{PROJECT_ROOT}/backend/`
+- **Frontend**: `{PROJECT_ROOT}/frontend/`
+
+**IMPORTANT**: Before running any commands, first determine the actual project root path using `pwd` or by locating the project directory. Never use hardcoded absolute paths. Always construct absolute paths dynamically based on the detected project location.
 
 ### Using the BGT Management Script (Recommended)
 
 The project includes a comprehensive management script for easy server control:
 
 ```bash
+# First, determine the project root (use pwd or locate the directory)
+PROJECT_ROOT=$(pwd)  # or find the directory containing bgt script
+
 # Install all dependencies (first time setup)
-cd /root/projects/board_game_tracker && ./bgt install
+cd "${PROJECT_ROOT}" && ./bgt install
 
 # Start both servers (shows logs in foreground - blocks terminal)
-cd /root/projects/board_game_tracker && ./bgt start
+cd "${PROJECT_ROOT}" && ./bgt start
 
 # Start both servers in background (recommended for development)
-cd /root/projects/board_game_tracker && ./bgt start-bg
+cd "${PROJECT_ROOT}" && ./bgt start-bg
 
 # Check server status
-cd /root/projects/board_game_tracker && ./bgt status
+cd "${PROJECT_ROOT}" && ./bgt status
 
 # Stop all servers
-cd /root/projects/board_game_tracker && ./bgt stop
+cd "${PROJECT_ROOT}" && ./bgt stop
 
 # Restart all servers (useful after code changes)
-cd /root/projects/board_game_tracker && ./bgt restart
+cd "${PROJECT_ROOT}" && ./bgt restart
 
 # View logs
-cd /root/projects/board_game_tracker && ./bgt logs           # Combined logs
-cd /root/projects/board_game_tracker && ./bgt logs backend   # Backend only
-cd /root/projects/board_game_tracker && ./bgt logs frontend  # Frontend only
+cd "${PROJECT_ROOT}" && ./bgt logs           # Combined logs
+cd "${PROJECT_ROOT}" && ./bgt logs backend   # Backend only
+cd "${PROJECT_ROOT}" && ./bgt logs frontend  # Frontend only
 ```
 
 ### Manual Server Management (Alternative)
@@ -67,12 +88,12 @@ If you need to manage servers manually:
 
 ```bash
 # Backend
-cd /root/projects/board_game_tracker/backend
+cd "${PROJECT_ROOT}/backend"
 pip3 install -r requirements.txt                    # Install dependencies
 nohup python3 app.py > app.log 2>&1 &              # Run Flask server in background (port 5002)
 
 # Frontend
-cd /root/projects/board_game_tracker/frontend
+cd "${PROJECT_ROOT}/frontend"
 npm install                                         # Install dependencies
 nohup npm start > frontend.log 2>&1 &              # Run React dev server in background (port 3000)
 npm run build                                       # Build for production
@@ -116,7 +137,8 @@ npm run build                                       # Build for production
 
 ### Backend Tests
 ```bash
-cd /root/projects/board_game_tracker/backend
+cd "${PROJECT_ROOT}/backend"
+source venv/bin/activate               # Activate virtual environment
 pytest                                 # Run all backend tests
 pytest -v                             # Verbose output with test names
 pytest --cov=. --cov-report=html      # Run with coverage report
@@ -124,7 +146,7 @@ pytest --cov=. --cov-report=html      # Run with coverage report
 
 ### Frontend Tests
 ```bash
-cd /root/projects/board_game_tracker/frontend
+cd "${PROJECT_ROOT}/frontend"
 npm test                               # Run all frontend tests (interactive)
 npm test -- --coverage                # Run with coverage report
 npm test -- --watchAll=false          # Run once without watch mode
@@ -140,12 +162,12 @@ npm test -- --watchAll=false          # Run once without watch mode
 
 - **IMPORTANT**: Before committing any changes, ALWAYS run the backend test suite to ensure code quality:
   ```bash
-  cd /root/projects/board_game_tracker/backend && pytest -v
+  cd "${PROJECT_ROOT}/backend" && source venv/bin/activate && pytest -v
   ```
 - **IMPORTANT**: Use the `./bgt` script for all server management tasks:
   ```bash
-  cd /root/projects/board_game_tracker && ./bgt status    # Check servers
-  cd /root/projects/board_game_tracker && ./bgt restart   # Restart after changes
+  cd "${PROJECT_ROOT}" && ./bgt status    # Check servers
+  cd "${PROJECT_ROOT}" && ./bgt restart   # Restart after changes
   ```
 - **IMPORTANT**: When updating documentation, ensure all three documentation files are kept in sync:
   ```bash
