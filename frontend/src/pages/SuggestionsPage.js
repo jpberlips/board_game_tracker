@@ -298,7 +298,7 @@ function SuggestionsPage() {
                       <p><span className="font-medium">Play time:</span> {suggestedGame.playing_time} minutes</p>
                     )}
                     {suggestedGame.complexity && (
-                      <p><span className="font-medium">Complexity:</span> {suggestedGame.complexity}/5</p>
+                      <p><span className="font-medium">Complexity:</span> {Number(suggestedGame.complexity).toFixed(1)}/5</p>
                     )}
                   </div>
                 </div>
